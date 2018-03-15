@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/acrm/NodeJsLessons/issues"
   },
-  "homepage": "https://github.com/acrm/NodeJsLessons#readme"
+  "homepage": "https://github.com/acrm/NodeJsLessons#readme",
+  "dependencies": {
+    "telebot": "^1.2.3"
+  }
 }
