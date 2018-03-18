@@ -5,7 +5,7 @@ This is **ReverseEchoBot**. When you send some message to it, it respond with re
 
 Install package:
 ```bash
-npm install acrm-telegram-bot
+> npm install acrm-telegram-bot
 ```
 
 Put in the root directory file ```credentials.js``` such as:
@@ -20,7 +20,7 @@ module.exports = Credentials;
 
 Run:
 ```bash
-node index
+> node index
 ```
 
 That's all!
