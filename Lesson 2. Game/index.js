@@ -1,28 +1,69 @@
-const readAnswer = require('readline-once')();
+/**
+ * Dependencies
+ */
+const readline = require('readline');
+const readlineOnce = require('readline-once');
 const randomInt  = require('random-int');
+const argv = require('minimist')(process.argv.slice(2));
+const fs = require('fs');
 
-const variants = ['h', 't'];
-const checkWin = (choice) => {
-  const result = variants[randomInt(0, 1)];
-  return choice == result;
+/**
+ * Logging
+ */
+const streams = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+const readAnswer = readlineOnce(streams);
+const logStatistics = (choice, result) => {
+  if(!argv.stat) return;
+  const record = `${choice}:${result}\n`;
+  fs.appendFile(argv.stat, record, (err) => {if (err) throw err;});
 }
-const start = async () => {
+
+/**
+ * Game logic
+ */
+const variants = ['h', 't'];
+const flipCoin = () => variants[randomInt(0, 1)];
+const checkWin = (choice) => flipCoin() == choice;
+const checkChoice = (choice) => {
+  switch(choice) {
+    case 'h':
+    case 't':
+      const isWin = checkWin(choice);
+      logStatistics(choice, isWin);
+      if(isWin) {
+        console.log(`You're win!`);
+      }
+      else {
+        console.log(`You're lose!`);
+      }
+    break;
+    default: console.log('Incorrect input, try again');
+  } 
+}
+
+/**
+ * Game loop
+ */
+const loop = async () => {
   while(true){
     const choice = await readAnswer('Head or Tail? h - Head, t - Tail, q - Quit: ');
     switch(choice) {
-      case 'h':
-      case 't':
-        if(checkWin(choice)){
-          console.log(`You're win!`);
-        }
-        else {
-          console.log(`You're loose!`);
-        }
-      break;
       case 'q': return;
-      default: console.log('Incorrect input, try again');
+      default: checkChoice(choice); break;
     }
   }
 }
 
-start();
+/**
+ * Entry point
+ */
+if(argv.choice) {
+  checkChoice(argv.choice);
+}
+else {
+  loop();
+}
+streams.close();

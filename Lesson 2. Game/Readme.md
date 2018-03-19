@@ -13,4 +13,16 @@ Run:
 > node index
 ```
 
-That's all!
+Also you can run in one-round mode, providing your choice ```h``` or ```t``` as parameter:
+Run:
+```bash
+> node index --choice [h|t]
+```
+
+If you want to log your game stattistics, you should provide a filename for log:
+Run:
+```bash
+> node index --stat stat.log
+```
+
+Good luck!
