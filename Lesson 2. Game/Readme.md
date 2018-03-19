@@ -1,21 +1,11 @@
 # Description
-This is **ReverseEchoBot**. When you send some message to it, it respond with reversed text of this message. That's all!
+This is **ConsoleHeadOrTail**. When you run it, you get question "Head or Tail?" and you need to peek up a variant. Then digital coin is flipped and you lose or win. And the next round begin. You can quit game any time.
 
-# Instalation
+# Installation
 
 Install package:
 ```bash
-> npm install acrm-telegram-bot
-```
-
-Put in the root directory file ```credentials.js``` such as:
-```js
-class Credentials {
-  static getTelegramBotToken() {
-    return "your-telegram-bot-token";
-  }
-}
-module.exports = Credentials;
+> npm install acrm-console-game
 ```
 
 Run:
