@@ -26,22 +26,21 @@ const logStatistics = (choice, result) => {
  */
 const variants = ['h', 't'];
 const flipCoin = () => variants[randomInt(0, 1)];
-const checkWin = (choice) => flipCoin() == choice;
+const checkWin = (choice) => flipCoin() === choice;
 const checkChoice = (choice) => {
-  switch(choice) {
-    case 'h':
-    case 't':
-      const isWin = checkWin(choice);
-      logStatistics(choice, isWin);
-      if(isWin) {
-        console.log(`You're win!`);
-      }
-      else {
-        console.log(`You're lose!`);
-      }
-    break;
-    default: console.log('Incorrect input, try again');
-  } 
+  if(!variants.includes(choice)) {
+    console.log('Incorrect input, try again');
+    return;
+  }
+
+  const isWin = checkWin(choice);
+  logStatistics(choice, isWin);
+  if(isWin) {
+    console.log(`You're win!`);
+  }
+  else {
+    console.log(`You're lose!`);
+  }
 }
 
 /**
@@ -49,11 +48,12 @@ const checkChoice = (choice) => {
  */
 const loop = async () => {
   while(true){
-    const choice = await readAnswer('Head or Tail? h - Head, t - Tail, q - Quit: ');
-    switch(choice) {
-      case 'q': return;
-      default: checkChoice(choice); break;
+    const choice = await readAnswer(`Head or Tail? h - Head, t - Tail, q - Quit: `);
+    if(choice === 'q') {
+      return;
     }
+
+    checkChoice(choice);
   }
 }
 
@@ -66,4 +66,8 @@ if(argv.choice) {
 else {
   loop();
 }
+
+/**
+ * Cleanup
+ */
 streams.close();

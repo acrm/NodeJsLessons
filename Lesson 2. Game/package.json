@@ -24,5 +24,8 @@
     "minimist": "^1.2.0",
     "random-int": "^1.0.0",
     "readline-once": "^1.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.0"
   }
 }
