@@ -1,5 +1,5 @@
 {
-  "name": "acrm-net-client",
+  "name": "acrm-web-grabber",
   "version": "1.0.0",
   "description": "Do some exciting stuff through network",
   "main": "index.js",

@@ -2,10 +2,11 @@ const request = require('request');
 const cheerio = require('cheerio');
 const iconv = require('iconv-lite');
 const minimist = require('minimist');
+const Credentials = require('./credentials');
 
 const argv = minimist(process.argv.slice(2));
 
-function getCheerioDom(url) {
+function getContent(url) {
   return new Promise((resolve, reject) => {
     request({
       url: url,
@@ -13,36 +14,47 @@ function getCheerioDom(url) {
     }, 
     function (error, response, html) {
       if(error) {
+        console.error(error);
         reject(error);
         return;
       }
 
       if (response.statusCode !== 200) {
+        console.error(response);
         reject(new Error(response.statusCode));
         return;
       }
 
       const htmlDecoded = iconv.decode(new Buffer(html), 'win-1251').toString()
-      const dom = cheerio.load(htmlDecoded);
-      resolve(dom);        
+      resolve(htmlDecoded);        
     });
   });
 }
 
 async function loadBash() {
-  const $ = await getCheerioDom('http://bash.im/abysstop');
-  $('body div.quote').each(function(i, quote) {
+  const htmlDecoded = await getContent('http://bash.im/abysstop');
+  const $ = cheerio.load(htmlDecoded);
+  const max = argv.n ? Math.min(argv.n, 10) : 1;
+  $('body div.quote').slice(0, max).each(function(i, quote) {
     const quoteDate = $(quote).find('div.actions span.abysstop-date').text();
     const quoteText = $(quote).find('div.text').text();
     console.log(`From ${quoteDate}:\n${quoteText}\n`);
   });
 }
 
+async function loadTranslation(text) {
+  const token = Credentials.getYaTranslatorToken();
+  const params = `key=${token}&lang=ru-en&text=${encodeURIComponent(text)}`;
+  const url = `https://translate.yandex.net/api/v1.5/tr.json/translate?${params}`;
+  const json = await getContent(url);
+  console.log(JSON.parse(json).text[0]);
+}
+
 if(argv._.includes('bash')) {
   loadBash();
 }
 else if (argv._.includes('trans')) {
-  console.log('Яндекс');
+  loadTranslation(argv.t);
 }
 else {
   console.log('Incorrect input');
