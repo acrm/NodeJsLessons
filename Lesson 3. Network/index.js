@@ -54,8 +54,12 @@ if(argv._.includes('bash')) {
   loadBash();
 }
 else if (argv._.includes('trans')) {
+  if(!argv.t) {
+    console.log(`Specify '-t' paramater with following text to translate`);
+    return;
+  }
   loadTranslation(argv.t);
 }
 else {
-  console.log('Incorrect input');
+  console.log(`Specify 'bash' or 'trans' command`);
 }

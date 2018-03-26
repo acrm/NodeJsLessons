@@ -11,6 +11,17 @@ Install package:
 > npm install acrm-web-grabber
 ```
 
+Put in the root directory file ```credentials.js``` such as:
+```js
+class Credentials {
+  static getYaTranslatorToken() {
+    return "your-yandex-translate-api-token";
+  }
+}
+module.exports = Credentials;
+```
+
+# Usage
 Run:
 ```bash
 > node index [command] [parameter]
@@ -27,3 +38,6 @@ Example:
 ```bash
 > node index trans -t "Привет мир!"
 ```
+
+# Future enhancements
+* Line breaks saving for 'bash' quotes 
