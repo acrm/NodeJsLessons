@@ -1,0 +1,24 @@
+{
+  "name": "acrm-express-grabber",
+  "version": "1.0.0",
+  "description": "Web application for grabbing some web-services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acrm/NodeJsLessons.git"
+  },
+  "keywords": [
+    "express"
+  ],
+  "author": "Roman Slobodenyuk aka Acrm Sjork",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/acrm/NodeJsLessons/issues"
+  },
+  "homepage": "https://github.com/acrm/NodeJsLessons#readme",
+  "dependencies": {
+  }
+}
