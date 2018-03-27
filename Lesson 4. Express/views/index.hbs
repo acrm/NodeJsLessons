@@ -5,8 +5,20 @@
   <body>
       <div class="wrapper">
         <div class="main">
-          <h1>Hello world</h1>
-          <p>Time: {{time}}</p>
+          <form action="get-quotes" method="post">
+            <div>
+              <label>Выберите тип услуги:</label>
+              <select name="command">
+                <option selected disabled>Не выбран</option>
+                <option value="bash">Цитаты с Bash.im</option>
+                <option value="trans">Перевод с Яндекс.Переводчика</option>
+              </select>
+            </div>
+            <div id="trans-params">
+              <label>Выберите тип услуги:</label>
+              <input type="text">
+            </div>
+          </form>
         </div>
       </div>
   </body>
