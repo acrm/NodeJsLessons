@@ -1,12 +1,31 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css">
+    <script>
+      document.addEventListener('DOMContentLoaded', (o, e) => {
+        const commandSelector = document.querySelector('#command-selector > select');
+        const updateParameters = () => {
+          const paramsContainer = document.getElementById('params-container');
+          for(let i = 0; i < paramsContainer.children.length; i++) {
+            const paramsElement = paramsContainer.children[i];
+            if(paramsElement.id === `params-${commandSelector.value}`) {
+              paramsElement.classList.remove('hidden');
+            }
+            else {
+              paramsElement.classList.add('hidden');
+            }
+          }
+        };
+        commandSelector.addEventListener('change', (o, e) => updateParameters());
+        updateParameters();        
+      });
+    </script>
   </head>
   <body>
       <div class="wrapper">
         <div class="main">
-          <form action="get-quotes" method="post">
-            <div>
+          <form action="run-command" method="post">
+            <div id='command-selector'>
               <label>Выберите тип услуги:</label>
               <select name="command">
                 <option selected disabled>Не выбран</option>
@@ -14,9 +33,15 @@
                 <option value="trans">Перевод с Яндекс.Переводчика</option>
               </select>
             </div>
-            <div id="trans-params">
-              <label>Выберите тип услуги:</label>
-              <input type="text">
+            <div id="params-container">
+              <div id="params-bash" class="hidden">
+                <label>Количество цитат:</label>
+                <input type="number" name="text" value="1" min="1" max="10">
+              </div>
+              <div id="params-trans" class="hidden">
+                <label>Текст для перевода:</label>
+                <input type="text" name="text">
+              </div>
             </div>
           </form>
         </div>
