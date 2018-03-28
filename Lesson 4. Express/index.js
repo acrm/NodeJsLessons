@@ -21,6 +21,9 @@ app.set('views', __dirname + '/views');
 app.get('/', function(req, res){
   res.render('index', {time: new Date()});
 });
+app.post('/run-command', function(req, res){
+  res.send({message:'POST'});
+});
 
 /**
  * Server start

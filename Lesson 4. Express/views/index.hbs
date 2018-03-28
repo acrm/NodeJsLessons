@@ -2,22 +2,57 @@
   <head>
     <link rel="stylesheet" href="style.css">
     <script>
-      document.addEventListener('DOMContentLoaded', (o, e) => {
-        const commandSelector = document.querySelector('#command-selector > select');
+      const postJson = (url, data) => {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function(){
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                resolve(JSON.parse(xhr.responseText));
+              }
+              reject(xhr.status);
+            }
+          };
+          xhr.open('POST', url, true);
+          xhr.send(JSON.stringify(data));
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', e => {
+        const form = document.querySelector('form');
+        const commandSelector = form.querySelector('#command-selector > select');
+
+        let paramsBlock;
         const updateParameters = () => {
           const paramsContainer = document.getElementById('params-container');
-          for(let i = 0; i < paramsContainer.children.length; i++) {
-            const paramsElement = paramsContainer.children[i];
-            if(paramsElement.id === `params-${commandSelector.value}`) {
-              paramsElement.classList.remove('hidden');
+          Array.from(paramsContainer.children).forEach(el => {
+            if(el.id === `params-${commandSelector.value}`) {
+              el.classList.remove('hidden');
+              paramsBlock = el;
             }
             else {
-              paramsElement.classList.add('hidden');
+              el.classList.add('hidden');
             }
-          }
+          });
         };
-        commandSelector.addEventListener('change', (o, e) => updateParameters());
-        updateParameters();        
+        commandSelector.addEventListener('change', e => updateParameters());
+        updateParameters();
+
+        const sumbitButton = form.querySelector('input[type=submit]');
+        sumbitButton.addEventListener('click', e => {
+          e.preventDefault(); 
+          const commandParams = {};
+          if(paramsBlock) {
+            Array.from(paramsBlock.querySelectorAll('input')).forEach(input => {
+              commandParams[input.name] = input.value;
+            });
+          }
+          postJson(form.action, {
+              command: commandSelector.value,
+              params: commandParams
+            })
+            .then(result => console.log(result));
+        });
       });
     </script>
   </head>
@@ -43,6 +78,7 @@
                 <input type="text" name="text">
               </div>
             </div>
+            <input type="submit" value="Отправить">
           </form>
         </div>
       </div>
