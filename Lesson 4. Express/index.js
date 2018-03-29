@@ -4,6 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const templating = require('consolidate');
+const {loadBash, loadTranslation} = require('./loader');
 
 /**
  * App configuration
@@ -22,6 +23,7 @@ app.get('/', function(req, res){
   res.render('index', {time: new Date()});
 });
 app.post('/run-command', function(req, res){
+  console.log(req.body);
   res.send({message:'POST'});
 });
 
