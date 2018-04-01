@@ -1,0 +1,25 @@
+{
+  "name": "acrm-tasklist",
+  "version": "1.0.0",
+  "description": "Task list",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acrm/NodeJsLessons.git"
+  },
+  "keywords": [
+    "tasklist",
+    "db",
+    "mongo",
+    "mysql"
+  ],
+  "author": "Roman Slobodenyuk aka Acrm Sjork",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/acrm/NodeJsLessons/issues"
+  },
+  "homepage": "https://github.com/acrm/NodeJsLessons#readme"
+}
