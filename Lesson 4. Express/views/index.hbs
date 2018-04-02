@@ -43,17 +43,30 @@
         const sumbitButton = form.querySelector('input[type=submit]');
         sumbitButton.addEventListener('click', e => {
           e.preventDefault(); 
-          const commandParams = {};
+          const command = commandSelector.value;
+          const params = {};
           if(paramsBlock) {
             Array.from(paramsBlock.querySelectorAll('input')).forEach(input => {
-              commandParams[input.name] = input.value;
+              params[input.name] = input.value;
             });
           }
           postJson(form.action, {
-              command: commandSelector.value,
-              params: commandParams
+              command,
+              params
             })
-            .then(result => console.log(result));
+            .then(result => {
+              const resultsContainer = document.getElementById('results');
+              if(command === 'bash') {
+                resultsContainer.innerHTML = '';
+                result.quotes.forEach(quote => {
+                  var div = document.createElement('div');
+                  div.className = 'quote';
+                  div.innerHTML = `<p>${quote.quoteDate}</p><p>${quote.quoteText}</p>`;
+                  resultsContainer.appendChild(div);
+                });
+                resultsContainer.classList.remove('hidden');
+              }
+            });
         });
       });
     </script>
@@ -81,6 +94,7 @@
               </div>
             </div>
             <input type="submit" value="Отправить">
+            <div id="results" class="hidden"></div>
           </form>
         </div>
       </div>

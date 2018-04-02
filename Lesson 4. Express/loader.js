@@ -31,7 +31,6 @@ function getContent(url) {
 async function loadBash(count) {
   console.log('loadBash');
   const htmlDecoded = await getContent('http://bash.im/abysstop');
-  //console.log(htmlDecoded);
   const $ = cheerio.load(htmlDecoded);
   const max = count ? Math.min(count, 10) : 1;
   const result = $('body div.quote').slice(0, max).map(function(i, quote) {
@@ -42,7 +41,6 @@ async function loadBash(count) {
       quoteText
     };
   }).get();
-  console.log(result);
   return result;
 }
 

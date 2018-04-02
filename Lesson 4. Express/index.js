@@ -24,19 +24,14 @@ app.get('/', function(req, res){
   res.render('index', {time: new Date()});
 });
 app.post('/run-command', function(req, res){
-  console.log(req.body);
   const {command, params} = req.body;
   if(command === 'bash') {
-    console.log('bash');
     const {count} = params;
-    console.log(count);
     loadBash(count).then(
     quotes => {
-      console.log('then');
       res.status(200).send({quotes});
     },
     err => {
-      console.log('catch');
       res.status(500).send({error: 'Cannot load bash quotes'});
     });
   }
