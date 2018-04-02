@@ -10,7 +10,8 @@ const {loadBash, loadTranslation} = require('./loader');
  * App configuration
  */
 const app = express();
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(express.static('public'));
 app.engine('hbs', templating.handlebars);
 app.set('view engine', 'hbs');
@@ -30,5 +31,8 @@ app.post('/run-command', function(req, res){
 /**
  * Server start
  */
-app.listen(8888);
+const port = 8888;
+app.listen(port, () => {
+  console.log(`Listen on ${port}`);
+});
 
