@@ -25,7 +25,32 @@ app.get('/', function(req, res){
 });
 app.post('/run-command', function(req, res){
   console.log(req.body);
-  res.send({message:'POST'});
+  const {command, params} = req.body;
+  if(command === 'bash') {
+    console.log('bash');
+    const {count} = params;
+    console.log(count);
+    loadBash(count).then(
+    quotes => {
+      console.log('then');
+      res.status(200).send({quotes});
+    },
+    err => {
+      console.log('catch');
+      res.status(500).send({error: 'Cannot load bash quotes'});
+    });
+  }
+  else if(command === 'trans') {
+    const {text} = params;
+    loadTranslation(text).then(translation => {
+      res.status(200).send({translation});
+    }).catch(() => {
+      res.status(500).send({error: 'Cannot translate text'});
+    });
+  }
+  else {
+    res.status(404).send({error: `Command ${command} is not found`});
+  }
 });
 
 /**

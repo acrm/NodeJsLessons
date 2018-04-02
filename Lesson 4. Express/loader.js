@@ -28,18 +28,22 @@ function getContent(url) {
   });
 }
 
-async function loadBash() {
+async function loadBash(count) {
+  console.log('loadBash');
   const htmlDecoded = await getContent('http://bash.im/abysstop');
+  //console.log(htmlDecoded);
   const $ = cheerio.load(htmlDecoded);
-  const max = argv.n ? Math.min(argv.n, 10) : 1;
-  $('body div.quote').slice(0, max).each(function(i, quote) {
+  const max = count ? Math.min(count, 10) : 1;
+  const result = $('body div.quote').slice(0, max).map(function(i, quote) {
     const quoteDate = $(quote).find('div.actions span.abysstop-date').text();
     const quoteText = $(quote).find('div.text').text();
     return {
       quoteDate, 
       quoteText
     };
-  });
+  }).get();
+  console.log(result);
+  return result;
 }
 
 async function loadTranslation(text) {
