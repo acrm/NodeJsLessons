@@ -29,6 +29,11 @@ function getContent(url) {
 }
 
 async function loadBash(count) {
+  // Sorry for this mock, it will be remove shortly!
+  // return [{
+  //   quoteDate: '2001-01-01 00:01', 
+  //   quoteText: 'Mock quote'}
+  // ];
   const htmlDecoded = await getContent('http://bash.im/abysstop');
   const $ = cheerio.load(htmlDecoded);
   const max = count ? Math.min(count, 10) : 1;
@@ -44,6 +49,10 @@ async function loadBash(count) {
 }
 
 async function loadTranslation(text) {
+  // Sorry for this mock, it will be remove shortly!
+  // return {
+  //   variants: ['Hi, mock']
+  // };
   const token = Credentials.getYaTranslatorToken();
   const params = `key=${token}&lang=ru-en&text=${encodeURIComponent(text)}`;
   const url = `https://translate.yandex.net/api/v1.5/tr.json/translate?${params}`;

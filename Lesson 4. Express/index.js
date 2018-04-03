@@ -24,12 +24,12 @@ app.set('views', path.join(__dirname, 'views'));
  * Requests handling
  */
 app.get('/', function(req, res){
-  res.render('index', {
-    cookie: req.cookies.default,
-    isBash: req.cookies.default === 'bash',
-    isTrans: req.cookies.default === 'trans',
-    isDefault: req.cookies.default !== 'bash' && req.cookies.default !== 'trans' 
-  });
+  const vm = {
+    isBash: req.cookies.acrm.default === 'bash',
+    isTrans: req.cookies.acrm.default === 'trans',
+    isDefault: req.cookies.acrm.default !== 'bash' && req.cookies.default !== 'trans' 
+  };
+  res.render('index', vm);
 });
 app.post('/run-command', function(req, res){
   const {command, params} = req.body;
@@ -37,7 +37,7 @@ app.post('/run-command', function(req, res){
     const {count} = params;
     loadBash(count).then(
     quotes => {
-      res.status(200).cookie({default: command}).send({quotes});
+      res.status(200).cookie('acrm', {default: command}).send({quotes});
     },
     err => {
       res.status(500).send({error: 'Cannot load bash quotes'});
@@ -46,7 +46,7 @@ app.post('/run-command', function(req, res){
   else if(command === 'trans') {
     const {text} = params;
     loadTranslation(text).then(translation => {
-      res.status(200).cookie({default: command}).send({translation});
+      res.status(200).cookie('acrm', {default: command}).send({translation});
     }).catch(() => {
       res.status(500).send({error: 'Cannot translate text'});
     });
