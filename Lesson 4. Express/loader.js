@@ -29,7 +29,6 @@ function getContent(url) {
 }
 
 async function loadBash(count) {
-  console.log('loadBash');
   const htmlDecoded = await getContent('http://bash.im/abysstop');
   const $ = cheerio.load(htmlDecoded);
   const max = count ? Math.min(count, 10) : 1;

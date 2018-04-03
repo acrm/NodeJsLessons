@@ -15,7 +15,6 @@
           };
           xhr.open('POST', url, true);
           xhr.setRequestHeader('Content-Type', 'application/json');
-          console.log(data);
           xhr.send(JSON.stringify(data));
         });
       }
@@ -56,12 +55,21 @@
             })
             .then(result => {
               const resultsContainer = document.getElementById('results');
+              resultsContainer.innerHTML = '';
               if(command === 'bash') {
-                resultsContainer.innerHTML = '';
                 result.quotes.forEach(quote => {
                   var div = document.createElement('div');
                   div.className = 'quote';
                   div.innerHTML = `<p>${quote.quoteDate}</p><p>${quote.quoteText}</p>`;
+                  resultsContainer.appendChild(div);
+                });
+                resultsContainer.classList.remove('hidden');
+              }
+              if (command === 'trans') {
+                result.translation.variants.forEach((variant, i) => {
+                  var div = document.createElement('div');
+                  div.className = 'variant';
+                  div.innerHTML = `<p>${i+1}. ${variant}</p>`;
                   resultsContainer.appendChild(div);
                 });
                 resultsContainer.classList.remove('hidden');
@@ -76,11 +84,11 @@
         <div class="main">
           <form action="run-command" method="post">
             <div id='command-selector'>
-              <label>Выберите тип услуги:</label>
+              <label>Выберите тип услуги: ({{cookie}})</label>
               <select name="command">
-                <option selected disabled>Не выбран</option>
-                <option value="bash">Цитаты с Bash.im</option>
-                <option value="trans">Перевод с Яндекс.Переводчика</option>
+                <option {{#if isDefault}} "selected" {{/if}} disabled>Не выбран</option>
+                <option value="bash" {{#if isBash}} "selected" {{/if}}>Цитаты с Bash.im</option>
+                <option value="trans" {{#if isTrans}} "selected" {{/if}}>Перевод с Яндекс.Переводчика</option>
               </select>
             </div>
             <div id="params-container">
