@@ -21,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/acrm/NodeJsLessons/issues"
   },
-  "homepage": "https://github.com/acrm/NodeJsLessons#readme"
+  "homepage": "https://github.com/acrm/NodeJsLessons#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongodb": "^3.0.5"
+  }
 }
