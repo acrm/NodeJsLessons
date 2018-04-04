@@ -9,11 +9,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const run = async () => {
   const mongoConnection = Credentials.getMongoDbConnection();
-  const mongoClient = await MongoClient.connect(mongoConnection.host, mongoConnection.auth); 
+  const mongoClient = await MongoClient.connect(mongoConnection.host, {auth: mongoConnection.auth}); 
   app.listen(port, () => {
     console.log(`Started on ${port}`);
     const db = mongoClient.db('njslessons');
-
     const test = { f1: 'hello', f2: 'world'};
     db.collection('test').insert(test, (err, results) => {
       console.log('inserted');
@@ -21,7 +20,6 @@ const run = async () => {
       console.log('results ', results);
       const res = db.collection('test').find().toArray().then(res => console.log('res: ', res), err => console.log('err: ', res));
       
-
       mongoClient.close();
     });
   });
