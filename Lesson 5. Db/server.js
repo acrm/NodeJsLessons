@@ -19,18 +19,31 @@ const run = async () => {
   db.once('open', function() {
     console.log('Db connection established');
   });
-  app.listen(port, () => {
-    console.log(`Started on ${port}`);
+  app.get('/tasks', (req, res) => {
+    Task.find().then(tasks => {
+      res.status(200).json(tasks.map((task) => {
+        return {
+          name: task.name,
+          creationDate: task.creationDate,
+          dueDate: task.dueDate,
+          done: task.done
+        };
+      }));
+    });
+  });
+  app.post('/task', (req, res) => {
     const task = new Task({
-      name: 'Submit homework'
+      name: req.body.name,
+      creationDate: req.body.creationDate,
+      dueDate: req.body.dueDate,
+      done: req.body.done
     });
-    console.log(task);
-    task.save().then(res => {
-      console.log(res);
-      Task.find().then(res => {
-        console.log(res);
-      });
+    task.save().then(res => {  
+      res.status(200).json({id: res._id});
     });
+  });
+  app.listen(port, () => {
+    console.log(`Started on ${port}`); 
   });
 };
 
