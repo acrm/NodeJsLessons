@@ -1,12 +1,43 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
+const ObjectID = require('mongodb').ObjectID;
 const Credentials = require('./credentials');
 const { Task } = require('./models')
 
 const port = 8000;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get('/tasks', (req, res) => {
+  Task.find().then(tasks => {
+    res.status(200).json(tasks.map(task => task.toDto()));
+  });
+});
+app.post('/task', (req, res) => {
+  const task = new Task({
+    name: req.body.name,
+    creationDate: req.body.creationDate,
+    dueDate: req.body.dueDate,
+    done: req.body.done
+  });
+  task.save().then(result => {  
+    console.log('result', result);
+    res.status(200).json({id: result._id});
+  });
+});
+app.patch('/task/:id/complete', (req, res) => {
+  Task.findById(req.params.id).then(task => {
+    task.complete();
+    task.save().then(() => res.sendStatus(200));
+  });
+});
+app.patch('/task/:id/postpone', (req, res) => {
+  Task.findById(req.params.id).then(task => {
+    task.postpone();
+    task.save().then(() => res.sendStatus(200));
+  });
+});
 
 const run = async () => {
   const dbInfo = Credentials.getMongoDbConnection();
@@ -18,29 +49,6 @@ const run = async () => {
   db.on('error', console.error.bind(console, 'Db connection error: '));
   db.once('open', function() {
     console.log('Db connection established');
-  });
-  app.get('/tasks', (req, res) => {
-    Task.find().then(tasks => {
-      res.status(200).json(tasks.map((task) => {
-        return {
-          name: task.name,
-          creationDate: task.creationDate,
-          dueDate: task.dueDate,
-          done: task.done
-        };
-      }));
-    });
-  });
-  app.post('/task', (req, res) => {
-    const task = new Task({
-      name: req.body.name,
-      creationDate: req.body.creationDate,
-      dueDate: req.body.dueDate,
-      done: req.body.done
-    });
-    task.save().then(res => {  
-      res.status(200).json({id: res._id});
-    });
   });
   app.listen(port, () => {
     console.log(`Started on ${port}`); 

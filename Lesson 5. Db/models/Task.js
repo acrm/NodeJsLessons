@@ -25,9 +25,19 @@ taskSchema.methods.postpone = function() {
   this.dueDate.setDay(this.dueDate.getDays() + 1);
 };
 
-taskSchema.methods.finish = function() {
+taskSchema.methods.complete = function() {
   this.done = true;
   this.completeDate = Date.now();
-} 
+};
+
+taskSchema.methods.toDto = function() {
+  return {
+    id: this._id,
+    name: this.name,
+    creationDate: this.creationDate,
+    dueDate: this.dueDate,
+    done: this.done
+  };
+}
 
 module.exports = mongoose.model('Task', taskSchema);
