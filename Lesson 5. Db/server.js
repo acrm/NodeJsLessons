@@ -7,7 +7,7 @@ const { Task } = require('./models')
 
 const port = 8000;
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ extended: true }));
 
 app.get('/tasks', (req, res) => {
   Task.find().then(tasks => {
@@ -36,6 +36,38 @@ app.patch('/task/:id/postpone', (req, res) => {
   Task.findById(req.params.id).then(task => {
     task.postpone();
     task.save().then(() => res.sendStatus(200));
+  });
+});
+app.delete('/task/:id', (req, res) => {
+  Task.findByIdAndRemove(req.params.id).exec()
+    .then((result) => {
+      if(result) {
+        res.sendStatus(200); 
+      }
+      else {
+        res.sendStatus(404);
+      } 
+    })
+    .catch((err) => {
+      res.sendStatus(500);
+      console.error(err);
+    });
+});
+app.put('/test', (req, response) => {
+  new Promise((resolve, reject) => {
+    try {
+      throw new Error();
+      resolve('Good');
+    }
+    catch(e) {
+      reject(e);
+    }
+  })
+  .then(res => {
+    response.sendStatus(200);
+  })
+  .catch(err => {
+    response.sendStatus(404);
   });
 });
 
